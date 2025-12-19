@@ -1,42 +1,107 @@
-"use server"
-import { auth } from "@/lib/auth";
+"use server";
 
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
+type AuthResult = {
+    success: boolean;
+    message: string;
+};
 
-export const signIn = async (email: string, password: string) => {
-    try {
-        await auth.api.signInEmail({
-            body: {
-                email: email,
-                password: password,
-            },
+/**
+ * Sign in with email and password
+ */
+export async function signIn(
+    email: string,
+    password: string
+): Promise<AuthResult> {
+    const supabase = await createClient();
 
-        })
-        return { success: true, message: "Signed in successfully" };
-    } catch (error) {
-        const e = error as Error;
-        console.log(e.message);
-        return { success: false, message: e.message || "An unknown error occurred" };
+    const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
+
+    if (error) {
+        return { success: false, message: error.message };
     }
 
+    return { success: true, message: "Signed in successfully" };
 }
-export const signup = async (name: string, email: string, password: string) => {
-    try {
-        await auth.api.signUpEmail({
-            body: {
-                email: email,
-                password: password,
+
+/**
+ * Sign up with email and password
+ * Requires email verification - user will receive a confirmation email
+ */
+export async function signup(
+    name: string,
+    email: string,
+    password: string
+): Promise<AuthResult & { requiresEmailVerification?: boolean }> {
+    const supabase = await createClient();
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+    const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+            data: {
+                full_name: name,
                 name: name,
             },
-        });
-        return { success: true, message: "User created successfully" };
-    } catch (error) {
-        const e = error as Error;
-        console.log(e.message);
-        return { success: false, message: e.message || "An unknown error occurred" };
+            emailRedirectTo: `${siteUrl}/api/auth/callback?next=/dashboard`,
+        },
+    });
+
+    if (error) {
+        return { success: false, message: error.message };
     }
+
+    return {
+        success: true,
+        message: "Please check your email to confirm your account",
+        requiresEmailVerification: true
+    };
 }
 
+/**
+ * Sign out the current user (server action)
+ */
+export async function signOutUser(): Promise<AuthResult> {
+    const supabase = await createClient();
 
+    const { error } = await supabase.auth.signOut();
 
+    if (error) {
+        return { success: false, message: error.message };
+    }
 
+    return { success: true, message: "Signed out successfully" };
+}
+
+/**
+ * Sign in with Google OAuth (server-side redirect)
+ */
+export async function signInWithGoogleServer(
+    redirectTo: string = "/dashboard"
+) {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/auth/callback?next=${redirectTo}`,
+        },
+    });
+
+    if (error) {
+        return { success: false, message: error.message };
+    }
+
+    if (data.url) {
+        redirect(data.url);
+    }
+
+    return { success: true, message: "Redirecting to Google" };
+}

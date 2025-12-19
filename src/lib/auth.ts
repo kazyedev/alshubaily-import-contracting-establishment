@@ -1,25 +1,37 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "./db/drizzle"; // your drizzle instance
-import { nextCookies } from "better-auth/next-js";
-import { schema } from "./db/schema";
+import { createClient } from "@/lib/supabase/server";
 
-export const auth = betterAuth({
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }
-  },
-  emailAndPassword: {
-    enabled: true,
-  },
-  database: drizzleAdapter(db, {
-    provider: "pg", // or "mysql", "sqlite"
-    schema: schema,
-  }),
-  plugins: [nextCookies()],
-  baseURL: process.env.NODE_ENV === "production"
-    ? "https://tulaab.online"
-    : "http://localhost:3000"
-});
+/**
+ * Get the current authenticated user from supabase
+ * Use this in server components and server actions
+ */
+export async function getUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return null;
+  }
+
+  return user;
+}
+
+/**
+ * Get session from supabase
+ * Use this when you need full session details
+ */
+export async function getSession() {
+  const supabase = await createClient();
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.getSession();
+
+  if (error || !session) {
+    return null;
+  }
+
+  return session;
+}

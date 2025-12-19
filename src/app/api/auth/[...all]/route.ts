@@ -1,4 +1,10 @@
-import { auth } from "@/lib/auth"; // path to your auth file
-import { toNextJsHandler } from "better-auth/next-js";
+import { NextResponse } from "next/server";
 
-export const { POST, GET } = toNextJsHandler(auth);
+// This route is deprecated - OAuth callbacks now handled by /api/auth/callback
+export async function GET() {
+    return NextResponse.redirect(new URL("/sign-in", process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"));
+}
+
+export async function POST() {
+    return NextResponse.redirect(new URL("/sign-in", process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"));
+}
