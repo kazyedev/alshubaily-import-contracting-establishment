@@ -124,18 +124,100 @@
     "dashboard": {
         "sidebar": {
             "title": "Dashboard",
-            "home": "Dashboard"
+            "home": "Dashboard",
+            "main": "Main",
+            "users": "Users",
+            "roles": "Roles",
+            "media": "Media",
+            "images": "Images",
+            "content": "Content",
+            "projects": "Projects",
+            "articles": "Articles",
+            "partners": "Partners",
+            "suppliers": "Suppliers",
+            "faqs": "FAQs",
+            "catalog": "Catalog",
+            "products": "Products",
+            "services": "Services"
         },
         "home": {
             "title": "Welcome to Dashboard",
             "subtitle": "Manage your application from here"
         },
-        "itemsPage": {
-            "title": "Items",
-            "subtitle": "Manage items in the system",
-            "loadMore": "Load More",
-            "loading": "Loading...",
-            "noItems": "No items found"
+        "users": {
+            "title": "Users",
+            "description": "Manage user accounts and their roles",
+            "addUser": "Add User",
+            "noUsers": "No users found",
+            "columns": {
+                "name": "Name",
+                "email": "Email",
+                "roles": "Roles",
+                "createdAt": "Created"
+            }
+        },
+        "roles": {
+            "title": "Roles & Permissions",
+            "description": "Manage roles and their permissions",
+            "noRoles": "No roles found"
+        },
+        "media": {
+            "title": "Media Library",
+            "description": "Manage images and media files",
+            "uploadImage": "Upload Image",
+            "noImages": "No images found"
+        },
+        "projects": {
+            "title": "Projects",
+            "description": "Manage projects and portfolios",
+            "addProject": "Add Project",
+            "noProjects": "No projects found"
+        },
+        "articles": {
+            "title": "Articles",
+            "description": "Manage blog articles and content",
+            "addArticle": "Add Article",
+            "noArticles": "No articles found"
+        },
+        "partners": {
+            "title": "Partners",
+            "description": "Manage partner companies",
+            "addPartner": "Add Partner",
+            "noPartners": "No partners found"
+        },
+        "suppliers": {
+            "title": "Suppliers",
+            "description": "Manage supplier companies",
+            "addSupplier": "Add Supplier",
+            "noSuppliers": "No suppliers found"
+        },
+        "faqs": {
+            "title": "FAQs",
+            "description": "Manage frequently asked questions",
+            "addFaq": "Add FAQ",
+            "noFaqs": "No FAQs found"
+        },
+        "products": {
+            "title": "Products",
+            "description": "Manage products catalog",
+            "addProduct": "Add Product",
+            "noProducts": "No products found"
+        },
+        "services": {
+            "title": "Services",
+            "description": "Manage services offerings",
+            "addService": "Add Service",
+            "noServices": "No services found"
+        },
+        "common": {
+            "actions": "Actions",
+            "view": "View",
+            "edit": "Edit",
+            "delete": "Delete",
+            "save": "Save",
+            "cancel": "Cancel",
+            "search": "Search...",
+            "noPermission": "You don't have permission to access this page"
         }
     }
 }

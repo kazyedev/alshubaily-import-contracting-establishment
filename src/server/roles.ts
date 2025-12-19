@@ -1,12 +1,19 @@
 "use server";
 
 import { db } from "@/lib/db/drizzle";
-import { accounts, accountRoles, roles } from "@/lib/db/schema/auth-schema";
-import { eq, and } from "drizzle-orm";
+import { accounts, accountRoles, roles, permissions, rolePermissions } from "@/lib/db/schema/auth-schema";
+import { eq, and, inArray } from "drizzle-orm";
 import { createClient } from "@/lib/supabase/server";
 
 export type UserRole = {
     id: string;
+    nameEn: string;
+    nameAr: string;
+};
+
+export type UserPermission = {
+    id: string;
+    key: string;
     nameEn: string;
     nameAr: string;
 };
@@ -132,4 +139,68 @@ export async function getAllRoles(): Promise<UserRole[]> {
         .from(roles);
 
     return allRoles;
+}
+
+/**
+ * Get all permissions for the current user based on their roles
+ */
+export async function getUserPermissions(): Promise<UserPermission[]> {
+    const userData = await getCurrentUserWithRoles();
+
+    if (!userData || !userData.account || userData.roles.length === 0) {
+        return [];
+    }
+
+    const roleIds = userData.roles.map(r => r.id);
+
+    // Get all permissions for user's roles
+    const userPermissions = await db
+        .select({
+            id: permissions.id,
+            key: permissions.key,
+            nameEn: permissions.nameEn,
+            nameAr: permissions.nameAr,
+        })
+        .from(rolePermissions)
+        .innerJoin(permissions, eq(rolePermissions.permissionId, permissions.id))
+        .where(inArray(rolePermissions.roleId, roleIds));
+
+    // Remove duplicates (user might have same permission from multiple roles)
+    const uniquePermissions = Array.from(
+        new Map(userPermissions.map(p => [p.key, p])).values()
+    );
+
+    return uniquePermissions;
+}
+
+/**
+ * Check if the current user has a specific permission
+ */
+export async function hasPermission(permissionKey: string): Promise<boolean> {
+    const userPermissions = await getUserPermissions();
+    return userPermissions.some(p => p.key === permissionKey);
+}
+
+/**
+ * Check if user has any of the specified permissions
+ */
+export async function checkAccess(permissionKeys: string[]): Promise<boolean> {
+    const userPermissions = await getUserPermissions();
+    return userPermissions.some(p => permissionKeys.includes(p.key));
+}
+
+/**
+ * Get all available permissions
+ */
+export async function getAllPermissions(): Promise<UserPermission[]> {
+    const allPermissions = await db
+        .select({
+            id: permissions.id,
+            key: permissions.key,
+            nameEn: permissions.nameEn,
+            nameAr: permissions.nameAr,
+        })
+        .from(permissions);
+
+    return allPermissions;
 }

@@ -124,18 +124,100 @@
     "dashboard": {
         "sidebar": {
             "title": "لوحة التحكم",
-            "home": "الرئيسية"
+            "home": "الرئيسية",
+            "main": "الرئيسية",
+            "users": "المستخدمين",
+            "roles": "الأدوار",
+            "media": "الوسائط",
+            "images": "الصور",
+            "content": "المحتوى",
+            "projects": "المشاريع",
+            "articles": "المقالات",
+            "partners": "الشركاء",
+            "suppliers": "الموردين",
+            "faqs": "الأسئلة الشائعة",
+            "catalog": "الكتالوج",
+            "products": "المنتجات",
+            "services": "الخدمات"
         },
         "home": {
             "title": "مرحباً بك في لوحة التحكم",
             "subtitle": "إدارة تطبيقك من هنا"
         },
-        "itemsPage": {
-            "title": "العناصر",
-            "subtitle": "إدارة العناصر في النظام",
-            "loadMore": "تحميل المزيد",
-            "loading": "جاري التحميل...",
-            "noItems": "لا توجد عناصر"
+        "users": {
+            "title": "المستخدمين",
+            "description": "إدارة حسابات المستخدمين وأدوارهم",
+            "addUser": "إضافة مستخدم",
+            "noUsers": "لا يوجد مستخدمين",
+            "columns": {
+                "name": "الاسم",
+                "email": "البريد الإلكتروني",
+                "roles": "الأدوار",
+                "createdAt": "تاريخ الإنشاء"
+            }
+        },
+        "roles": {
+            "title": "الأدوار والصلاحيات",
+            "description": "إدارة الأدوار وصلاحياتها",
+            "noRoles": "لا توجد أدوار"
+        },
+        "media": {
+            "title": "مكتبة الوسائط",
+            "description": "إدارة الصور وملفات الوسائط",
+            "uploadImage": "رفع صورة",
+            "noImages": "لا توجد صور"
+        },
+        "projects": {
+            "title": "المشاريع",
+            "description": "إدارة المشاريع والأعمال",
+            "addProject": "إضافة مشروع",
+            "noProjects": "لا توجد مشاريع"
+        },
+        "articles": {
+            "title": "المقالات",
+            "description": "إدارة المقالات والمحتوى",
+            "addArticle": "إضافة مقال",
+            "noArticles": "لا توجد مقالات"
+        },
+        "partners": {
+            "title": "الشركاء",
+            "description": "إدارة الشركات الشريكة",
+            "addPartner": "إضافة شريك",
+            "noPartners": "لا يوجد شركاء"
+        },
+        "suppliers": {
+            "title": "الموردين",
+            "description": "إدارة شركات التوريد",
+            "addSupplier": "إضافة مورد",
+            "noSuppliers": "لا يوجد موردين"
+        },
+        "faqs": {
+            "title": "الأسئلة الشائعة",
+            "description": "إدارة الأسئلة المتكررة",
+            "addFaq": "إضافة سؤال",
+            "noFaqs": "لا توجد أسئلة"
+        },
+        "products": {
+            "title": "المنتجات",
+            "description": "إدارة كتالوج المنتجات",
+            "addProduct": "إضافة منتج",
+            "noProducts": "لا توجد منتجات"
+        },
+        "services": {
+            "title": "الخدمات",
+            "description": "إدارة عروض الخدمات",
+            "addService": "إضافة خدمة",
+            "noServices": "لا توجد خدمات"
+        },
+        "common": {
+            "actions": "الإجراءات",
+            "view": "عرض",
+            "edit": "تعديل",
+            "delete": "حذف",
+            "save": "حفظ",
+            "cancel": "إلغاء",
+            "search": "بحث...",
+            "noPermission": "ليس لديك صلاحية للوصول إلى هذه الصفحة"
         }
     }
 }
