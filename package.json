@@ -17,7 +17,8 @@
     "db:seed:suppliers": "tsx scripts/seed-suppliers.ts",
     "db:seed:property-categories": "tsx src/scripts/seed-property-categories.ts",
     "db:seed:properties": "tsx src/scripts/seed-properties.ts",
-    "db:seed:products": "tsx src/scripts/seed-products.ts"
+    "db:seed:products": "tsx src/scripts/seed-products.ts",
+    "db:seed:projects": "tsx scripts/seed-projects.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
