@@ -7,7 +7,15 @@ import {
     materials,
     techniques,
     qualitySafetyStandards,
+    countries,
+    usages,
+    importMethods,
+    deliveryMethods,
+    qualityWarrantyStandards,
+    shipments,
+    beneficiaryCategories,
 } from "@/lib/db/schema/services-schema";
+import { suppliers } from "@/lib/db/schema/partners-schema";
 import { whyChooseUs, faqs } from "@/lib/db/schema/common-schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
@@ -21,6 +29,14 @@ export type Technique = typeof techniques.$inferSelect;
 export type QualitySafetyStandard = typeof qualitySafetyStandards.$inferSelect;
 export type WhyChooseUsItem = typeof whyChooseUs.$inferSelect;
 export type FaqItem = typeof faqs.$inferSelect;
+export type Country = typeof countries.$inferSelect;
+export type Supplier = typeof suppliers.$inferSelect;
+export type Usage = typeof usages.$inferSelect;
+export type BeneficiaryCategory = typeof beneficiaryCategories.$inferSelect;
+export type ImportMethod = typeof importMethods.$inferSelect;
+export type DeliveryMethod = typeof deliveryMethods.$inferSelect;
+export type QualityWarrantyStandard = typeof qualityWarrantyStandards.$inferSelect;
+export type Shipment = typeof shipments.$inferSelect;
 
 // ==================== Main Services ====================
 
@@ -277,5 +293,301 @@ export async function deleteFaq(id: string): Promise<{ success: boolean; message
     } catch (error) {
         console.error("Error deleting FAQ:", error);
         return { success: false, message: "Failed to delete FAQ" };
+    }
+}
+
+// ==================== Countries ====================
+
+export async function getAllCountries(): Promise<Country[]> {
+    return db.select().from(countries).orderBy(countries.nameEn);
+}
+
+export async function createCountry(data: { nameEn: string; nameAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(countries).values({ id, ...data });
+        return { success: true, message: "Country created", id };
+    } catch (error) {
+        console.error("Error creating country:", error);
+        return { success: false, message: "Failed to create country" };
+    }
+}
+
+export async function updateCountry(id: string, data: { nameEn: string; nameAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(countries).set(data).where(eq(countries.id, id));
+        return { success: true, message: "Country updated" };
+    } catch (error) {
+        console.error("Error updating country:", error);
+        return { success: false, message: "Failed to update country" };
+    }
+}
+
+export async function deleteCountry(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(countries).where(eq(countries.id, id));
+        return { success: true, message: "Country deleted" };
+    } catch (error) {
+        console.error("Error deleting country:", error);
+        return { success: false, message: "Failed to delete country" };
+    }
+}
+
+// ==================== Suppliers ====================
+
+export async function getAllSuppliers(): Promise<Supplier[]> {
+    return db.select().from(suppliers).orderBy(suppliers.nameEn);
+}
+
+export async function createSupplier(data: { nameEn: string; nameAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(suppliers).values({ id, ...data });
+        return { success: true, message: "Supplier created", id };
+    } catch (error) {
+        console.error("Error creating supplier:", error);
+        return { success: false, message: "Failed to create supplier" };
+    }
+}
+
+export async function updateSupplier(id: string, data: { nameEn: string; nameAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(suppliers).set(data).where(eq(suppliers.id, id));
+        return { success: true, message: "Supplier updated" };
+    } catch (error) {
+        console.error("Error updating supplier:", error);
+        return { success: false, message: "Failed to update supplier" };
+    }
+}
+
+export async function deleteSupplier(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(suppliers).where(eq(suppliers.id, id));
+        return { success: true, message: "Supplier deleted" };
+    } catch (error) {
+        console.error("Error deleting supplier:", error);
+        return { success: false, message: "Failed to delete supplier" };
+    }
+}
+
+// ==================== Beneficiary Categories ====================
+
+export async function getAllBeneficiaryCategories(): Promise<BeneficiaryCategory[]> {
+    return db.select().from(beneficiaryCategories).orderBy(beneficiaryCategories.titleEn);
+}
+
+export async function createBeneficiaryCategory(data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(beneficiaryCategories).values({ id, ...data });
+        return { success: true, message: "Beneficiary category created", id };
+    } catch (error) {
+        console.error("Error creating beneficiary category:", error);
+        return { success: false, message: "Failed to create beneficiary category" };
+    }
+}
+
+export async function updateBeneficiaryCategory(id: string, data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(beneficiaryCategories).set(data).where(eq(beneficiaryCategories.id, id));
+        return { success: true, message: "Beneficiary category updated" };
+    } catch (error) {
+        console.error("Error updating beneficiary category:", error);
+        return { success: false, message: "Failed to update beneficiary category" };
+    }
+}
+
+export async function deleteBeneficiaryCategory(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(beneficiaryCategories).where(eq(beneficiaryCategories.id, id));
+        return { success: true, message: "Beneficiary category deleted" };
+    } catch (error) {
+        console.error("Error deleting beneficiary category:", error);
+        return { success: false, message: "Failed to delete beneficiary category" };
+    }
+}
+
+// ==================== Usages ====================
+
+export async function getAllUsages(): Promise<Usage[]> {
+    return db.select().from(usages).orderBy(usages.titleEn);
+}
+
+export async function createUsage(data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(usages).values({ id, ...data });
+        return { success: true, message: "Usage created", id };
+    } catch (error) {
+        console.error("Error creating usage:", error);
+        return { success: false, message: "Failed to create usage" };
+    }
+}
+
+export async function updateUsage(id: string, data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(usages).set(data).where(eq(usages.id, id));
+        return { success: true, message: "Usage updated" };
+    } catch (error) {
+        console.error("Error updating usage:", error);
+        return { success: false, message: "Failed to update usage" };
+    }
+}
+
+export async function deleteUsage(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(usages).where(eq(usages.id, id));
+        return { success: true, message: "Usage deleted" };
+    } catch (error) {
+        console.error("Error deleting usage:", error);
+        return { success: false, message: "Failed to delete usage" };
+    }
+}
+
+// ==================== Import Methods ====================
+
+export async function getAllImportMethods(): Promise<ImportMethod[]> {
+    return db.select().from(importMethods).orderBy(importMethods.titleEn);
+}
+
+export async function createImportMethod(data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(importMethods).values({ id, ...data });
+        return { success: true, message: "Import method created", id };
+    } catch (error) {
+        console.error("Error creating import method:", error);
+        return { success: false, message: "Failed to create import method" };
+    }
+}
+
+export async function updateImportMethod(id: string, data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(importMethods).set(data).where(eq(importMethods.id, id));
+        return { success: true, message: "Import method updated" };
+    } catch (error) {
+        console.error("Error updating import method:", error);
+        return { success: false, message: "Failed to update import method" };
+    }
+}
+
+export async function deleteImportMethod(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(importMethods).where(eq(importMethods.id, id));
+        return { success: true, message: "Import method deleted" };
+    } catch (error) {
+        console.error("Error deleting import method:", error);
+        return { success: false, message: "Failed to delete import method" };
+    }
+}
+
+// ==================== Delivery Methods ====================
+
+export async function getAllDeliveryMethods(): Promise<DeliveryMethod[]> {
+    return db.select().from(deliveryMethods).orderBy(deliveryMethods.titleEn);
+}
+
+export async function createDeliveryMethod(data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(deliveryMethods).values({ id, ...data });
+        return { success: true, message: "Delivery method created", id };
+    } catch (error) {
+        console.error("Error creating delivery method:", error);
+        return { success: false, message: "Failed to create delivery method" };
+    }
+}
+
+export async function updateDeliveryMethod(id: string, data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(deliveryMethods).set(data).where(eq(deliveryMethods.id, id));
+        return { success: true, message: "Delivery method updated" };
+    } catch (error) {
+        console.error("Error updating delivery method:", error);
+        return { success: false, message: "Failed to update delivery method" };
+    }
+}
+
+export async function deleteDeliveryMethod(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(deliveryMethods).where(eq(deliveryMethods.id, id));
+        return { success: true, message: "Delivery method deleted" };
+    } catch (error) {
+        console.error("Error deleting delivery method:", error);
+        return { success: false, message: "Failed to delete delivery method" };
+    }
+}
+
+// ==================== Quality Warranty Standards ====================
+
+export async function getAllQualityWarrantyStandards(): Promise<QualityWarrantyStandard[]> {
+    return db.select().from(qualityWarrantyStandards).orderBy(qualityWarrantyStandards.titleEn);
+}
+
+export async function createQualityWarrantyStandard(data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(qualityWarrantyStandards).values({ id, ...data });
+        return { success: true, message: "Quality warranty standard created", id };
+    } catch (error) {
+        console.error("Error creating quality warranty standard:", error);
+        return { success: false, message: "Failed to create quality warranty standard" };
+    }
+}
+
+export async function updateQualityWarrantyStandard(id: string, data: { titleEn: string; titleAr: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(qualityWarrantyStandards).set(data).where(eq(qualityWarrantyStandards.id, id));
+        return { success: true, message: "Quality warranty standard updated" };
+    } catch (error) {
+        console.error("Error updating quality warranty standard:", error);
+        return { success: false, message: "Failed to update quality warranty standard" };
+    }
+}
+
+export async function deleteQualityWarrantyStandard(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(qualityWarrantyStandards).where(eq(qualityWarrantyStandards.id, id));
+        return { success: true, message: "Quality warranty standard deleted" };
+    } catch (error) {
+        console.error("Error deleting quality warranty standard:", error);
+        return { success: false, message: "Failed to delete quality warranty standard" };
+    }
+}
+
+// ==================== Shipments ====================
+
+export async function getAllShipments(): Promise<Shipment[]> {
+    return db.select().from(shipments).orderBy(shipments.titleEn);
+}
+
+export async function createShipment(data: { titleEn: string; titleAr: string; descriptionEn?: string; descriptionAr?: string }): Promise<{ success: boolean; message: string; id?: string }> {
+    try {
+        const id = nanoid();
+        await db.insert(shipments).values({ id, ...data });
+        return { success: true, message: "Shipment created", id };
+    } catch (error) {
+        console.error("Error creating shipment:", error);
+        return { success: false, message: "Failed to create shipment" };
+    }
+}
+
+export async function updateShipment(id: string, data: { titleEn: string; titleAr: string; descriptionEn?: string; descriptionAr?: string }): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.update(shipments).set(data).where(eq(shipments.id, id));
+        return { success: true, message: "Shipment updated" };
+    } catch (error) {
+        console.error("Error updating shipment:", error);
+        return { success: false, message: "Failed to update shipment" };
+    }
+}
+
+export async function deleteShipment(id: string): Promise<{ success: boolean; message: string }> {
+    try {
+        await db.delete(shipments).where(eq(shipments.id, id));
+        return { success: true, message: "Shipment deleted" };
+    } catch (error) {
+        console.error("Error deleting shipment:", error);
+        return { success: false, message: "Failed to delete shipment" };
     }
 }
