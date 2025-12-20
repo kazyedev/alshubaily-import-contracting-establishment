@@ -7,3 +7,5 @@ export { BilingualInput } from "./BilingualInput";
 export { EmptyState } from "./EmptyState";
 export { StatusBadge } from "./StatusBadge";
 export { ImageUpload } from "./ImageUpload";
+export { LookupPageClient } from "./LookupPageClient";
+export { MultiSelectCreatable } from "./MultiSelectCreatable";
