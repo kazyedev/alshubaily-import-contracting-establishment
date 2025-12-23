@@ -17,6 +17,7 @@ import {
     Wrench,
     ChevronDown,
     ChevronRight,
+    Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -69,6 +70,7 @@ const navGroups: NavGroup[] = [
             { href: '/dashboard/partners', labelKey: 'partners', icon: Handshake, permission: 'partners.view' },
             { href: '/dashboard/suppliers', labelKey: 'suppliers', icon: Truck, permission: 'suppliers.view' },
             { href: '/dashboard/faqs', labelKey: 'faqs', icon: MessageSquareQuote, permission: 'faqs.view' },
+            { href: '/dashboard/website-info', labelKey: 'websiteInfo', icon: Globe, permission: 'website.view' },
         ],
     },
     {

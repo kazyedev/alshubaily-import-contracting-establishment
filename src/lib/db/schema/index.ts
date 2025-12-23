@@ -7,6 +7,7 @@ import * as blogSchema from "./blog-schema";
 import * as productsSchema from "./products-schema";
 import * as servicesSchema from "./services-schema";
 import * as commonSchema from "./common-schema";
+import * as websiteInfoSchema from "./website-info-schema";
 
 export const schema = {
     ...authSchema,
@@ -18,6 +19,7 @@ export const schema = {
     ...productsSchema,
     ...servicesSchema,
     ...commonSchema,
+    ...websiteInfoSchema,
 };
 
 // Re-export all schemas for direct imports
@@ -30,3 +32,4 @@ export * from "./blog-schema";
 export * from "./products-schema";
 export * from "./services-schema";
 export * from "./common-schema";
+export * from "./website-info-schema";
