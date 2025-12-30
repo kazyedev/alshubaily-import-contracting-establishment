@@ -1,118 +1,73 @@
-'use client';
+import { Suspense } from "react";
+import { getHeaderData } from "@/actions/header";
+import { getAllContactInfo, getAllSocialMedia } from "@/actions/website-info";
+import { FooterClient } from "./footer/FooterClient";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import {
-    Youtube,
-    Linkedin,
-    Instagram,
-    Facebook,
-} from 'lucide-react';
-import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
-
-const Footer = () => {
-    const t = useTranslations('Footer');
-    const navItems = useTranslations('navItems');
-
-    const socialLinks = [
-        { icon: Youtube, href: 'https://youtube.com', label: 'YouTube', isLucide: true },
-        { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn', isLucide: true },
-        { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', isLucide: true },
-        { icon: FaTelegram, href: 'https://t.me/', label: 'Telegram', isLucide: false },
-        { icon: FaWhatsapp, href: 'https://wa.me/', label: 'WhatsApp', isLucide: false },
-        { icon: Facebook, href: 'https://facebook.com', label: 'Facebook', isLucide: true },
-        { icon: FaXTwitter, href: 'https://twitter.com', label: 'X (Twitter)', isLucide: false },
-    ];
-
-    const sitemapLinks = [
-        { label: navItems('home'), href: '/' },
-        { label: navItems('about'), href: '/about' },
-        { label: navItems('contact'), href: '/contact' },
-    ];
+async function FooterData() {
+    const [headerData, contactInfo, socialLinks] = await Promise.all([
+        getHeaderData(),
+        getAllContactInfo(),
+        getAllSocialMedia(),
+    ]);
 
     return (
-        <footer className="bg-[#0b8eca] text-white">
-            <div className="container mx-auto px-4 py-12">
-                {/* Social Media Icons */}
-                <div className="flex justify-center gap-4 mb-12 pb-8 border-b border-white/20 flex-row items-center">
-                    <div className='h-1 bg-white w-30 z-20'></div>
+        <FooterClient
+            data={headerData}
+            contactInfo={contactInfo}
+            socialLinks={socialLinks}
+        />
+    );
+}
 
-                    {socialLinks.map((social) => {
-                        const Icon = social.icon;
-                        return (
-                            <Link
-                                key={social.label}
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                                aria-label={social.label}
-                            >
-                                <Icon className="w-5 h-5" />
-                            </Link>
-                        );
-                    })}
-                    <div className='h-1 bg-white w-30 z-20'></div>
-                </div>
-
-                {/* Footer Links Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 max-w-2xl mx-auto">
-                    {/* Quick Links */}
-                    <div className="text-center md:text-start">
-                        <h3 className="text-lg font-bold mb-4 pb-2 border-b border-white/20">
-                            Quick Links
-                        </h3>
-                        <ul className="space-y-2">
-                            {sitemapLinks.map((link, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-sm hover:underline hover:translate-x-1 rtl:hover:-translate-x-1 inline-block transition-transform duration-200"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
+function FooterSkeleton() {
+    return (
+        <footer className="bg-foreground text-background">
+            <div className="container mx-auto px-4 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <div>
+                        <div className="flex items-center gap-3 mb-6">
+                            <Skeleton className="w-12 h-12 rounded-xl bg-background/10" />
+                            <Skeleton className="h-6 w-24 bg-background/10" />
+                        </div>
+                        <Skeleton className="h-20 w-full bg-background/10 mb-6" />
+                        <div className="flex gap-2">
+                            {[1, 2, 3, 4].map((i) => (
+                                <Skeleton key={i} className="w-10 h-10 rounded-xl bg-background/10" />
                             ))}
-                        </ul>
+                        </div>
                     </div>
-
-                    {/* Legal */}
-                    <div className="text-center md:text-start">
-                        <h3 className="text-lg font-bold mb-4 pb-2 border-b border-white/20">
-                            Legal
-                        </h3>
-                        <ul className="space-y-2">
-                            <li>
-                                <Link
-                                    href="/privacy"
-                                    className="text-sm hover:underline hover:translate-x-1 rtl:hover:-translate-x-1 inline-block transition-transform duration-200"
-                                >
-                                    {t('bottomLinks.privacy')}
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    href="/terms"
-                                    className="text-sm hover:underline hover:translate-x-1 rtl:hover:-translate-x-1 inline-block transition-transform duration-200"
-                                >
-                                    {t('bottomLinks.terms')}
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
+                    {[1, 2, 3].map((col) => (
+                        <div key={col}>
+                            <Skeleton className="h-6 w-32 bg-background/10 mb-6" />
+                            <div className="space-y-3">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <Skeleton key={i} className="h-4 w-28 bg-background/10" />
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </div>
-
-                {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/20">
-                    <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-                        <p className="text-sm">
-                            {t('copyright')}
-                        </p>
+            </div>
+            <div className="border-t border-background/10">
+                <div className="container mx-auto px-4 py-6">
+                    <div className="flex justify-between items-center">
+                        <Skeleton className="h-4 w-64 bg-background/10" />
+                        <div className="flex gap-6">
+                            <Skeleton className="h-4 w-24 bg-background/10" />
+                            <Skeleton className="h-4 w-24 bg-background/10" />
+                        </div>
                     </div>
                 </div>
             </div>
         </footer>
     );
-};
+}
 
-export default Footer;
+export default function Footer() {
+    return (
+        <Suspense fallback={<FooterSkeleton />}>
+            <FooterData />
+        </Suspense>
+    );
+}

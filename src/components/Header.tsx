@@ -1,126 +1,42 @@
-'use client';
+import { Suspense } from "react";
+import { getHeaderData } from "@/actions/header";
+import { HeaderClient } from "./header/HeaderClient";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { useLocale, useTranslations } from 'next-intl';
-import LanguageSwitch from './LanguageSwitch'
-import ModeToggler from './mode-toggler'
-import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import Image from 'next/image';
+async function HeaderData() {
+    const data = await getHeaderData();
+    return <HeaderClient data={data} />;
+}
 
-const Header = () => {
-    const t = useTranslations('HomePage');
-    const navItems = useTranslations('navItems');
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const locale = useLocale();
-
-    const navItemsList = [
-        { label: navItems('home'), href: '/' },
-        { label: navItems('about'), href: '/about' },
-        { label: navItems('contact'), href: '/contact' },
-    ];
-
+function HeaderSkeleton() {
     return (
-        <>
-            {/* Top Language Bar */}
-            <div className="bg-[#0b8eca] text-white py-2 px-4">
-                <div className="container mx-auto flex justify-end items-center">
-                    <LanguageSwitch />
+        <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+            <div className="container mx-auto px-4">
+                <div className="flex items-center justify-between h-16 md:h-20">
+                    <div className="flex items-center gap-3">
+                        <Skeleton className="w-10 h-10 md:w-12 md:h-12 rounded-xl" />
+                        <Skeleton className="hidden sm:block h-6 w-32" />
+                    </div>
+                    <div className="hidden lg:flex items-center gap-2">
+                        <Skeleton className="h-8 w-20 rounded-lg" />
+                        <Skeleton className="h-8 w-24 rounded-lg" />
+                        <Skeleton className="h-8 w-20 rounded-lg" />
+                        <Skeleton className="h-8 w-20 rounded-lg" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="w-10 h-10 rounded-xl" />
+                        <Skeleton className="w-10 h-10 rounded-xl" />
+                    </div>
                 </div>
             </div>
-
-            {/* Main Header */}
-            <header className="bg-background border-b border-border sticky top-0 z-40">
-                <div className="container mx-auto">
-                    {/* Mobile & Tablet Header */}
-                    <div className="flex items-center justify-between py-4 px-4 lg:hidden">
-                        {/* Hamburger Menu */}
-                        <button
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="p-2 hover:bg-accent rounded-md transition-colors"
-                            aria-label="Toggle menu"
-                        >
-                            <Menu className="w-6 h-6" />
-                        </button>
-
-                        {/* Logo */}
-                        <Link href="/" className="flex-shrink-0 items-center">
-                            <div className="w-auto">
-                                <h1 className="text-lg font-bold text-[#0b8eca]">{t('title')}</h1>
-                            </div>
-                        </Link>
-
-                        <ModeToggler />
-                    </div>
-
-                    {/* Desktop Header */}
-                    <div className="hidden lg:flex items-center justify-between py-4 px-4">
-                        {/* Logo */}
-                        <Link href="/" className="flex-shrink-0">
-                            <div className="w-auto">
-                                <h1 className="text-xl font-bold text-[#0b8eca]">{t('title')}</h1>
-                            </div>
-                        </Link>
-
-                        {/* Navigation */}
-                        <nav className="flex items-center gap-1 me-auto ms-12">
-                            {navItemsList.map((item) => (
-                                <Link
-                                    key={item.label}
-                                    href={item.href}
-                                    className="block px-4 py-2 text-md font-medium text-foreground hover:text-[#0b8eca] transition-colors"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </nav>
-
-                        <ModeToggler />
-                    </div>
-                </div>
-            </header>
-
-            {/* Mobile Menu Overlay */}
-            {isMobileMenuOpen && (
-                <div className="fixed inset-0 z-50 lg:hidden">
-                    {/* Backdrop */}
-                    <div
-                        className="absolute inset-0 bg-black/50"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                    />
-
-                    {/* Menu Panel */}
-                    <div className="absolute inset-0 bg-[#0b5f7f] text-white overflow-y-auto">
-                        {/* Close Button */}
-                        <div className="flex justify-start p-4 mt-12">
-                            <button
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="p-2 hover:bg-white/10 rounded-md transition-colors"
-                                aria-label="Close menu"
-                            >
-                                <X className="w-8 h-8" />
-                            </button>
-                        </div>
-
-                        {/* Navigation Items */}
-                        <nav className="px-6 py-4 space-y-2">
-                            {navItemsList.map((item) => (
-                                <div key={item.label} className="border-b border-white/20 pb-4">
-                                    <Link
-                                        href={item.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="block text-xl py-3 hover:text-white/80 transition-colors"
-                                    >
-                                        {item.label}
-                                    </Link>
-                                </div>
-                            ))}
-                        </nav>
-                    </div>
-                </div>
-            )}
-        </>
+        </header>
     );
-};
+}
 
-export default Header;
+export default function Header() {
+    return (
+        <Suspense fallback={<HeaderSkeleton />}>
+            <HeaderData />
+        </Suspense>
+    );
+}
